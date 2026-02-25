@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import Card from '../components/Card'
 import { useNavigate } from 'react-router-dom'
-import { userDataContext } from '../context/userContext'
+import { userDataContext } from '../context/UserContext'
 import bg from "../assets/authBg.png"
 import image1 from "../assets/image1.png"
 import image2 from "../assets/image2.jpg"
