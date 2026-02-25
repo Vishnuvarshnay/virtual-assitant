@@ -5,7 +5,7 @@ import axios from 'axios';
 export const userDataContext = createContext();
 
 function UserContext({ children }) {
-  const serverUrl = "http://localhost:8000"; //
+  const serverUrl = "https://virtual-assitant-backened.onrender.com"; //
   const [userData, setUserData] = useState(null); //
 
   // Function jo backend se current logged-in user ka data lata hai
