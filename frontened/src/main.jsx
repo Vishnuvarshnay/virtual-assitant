@@ -4,7 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 // YE LINE ADD KAREIN:
-import UserContext from './context/userContext.jsx'
+import UserContext from './context/UserContext.jsx'
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <UserContext>
