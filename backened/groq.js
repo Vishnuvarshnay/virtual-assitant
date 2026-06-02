@@ -53,13 +53,18 @@ const groqResponse = async (prompt, assistantName = "Shray", userName = "Vishnu"
         return JSON.parse(content);
 
     } catch (error) {
-        console.error("Groq Error:", error.response?.data || error.message);
-        return {
-            "type": "general",
-            "userinput": prompt,
-            "response": "I am having trouble connecting to my brain right now."
-        };
-    }
+    console.log("=== GROQ ERROR START ===");
+    console.log(error.response?.status);
+    console.log(error.response?.data);
+    console.log(error.message);
+    console.log("=== GROQ ERROR END ===");
+
+    return {
+        type: "general",
+        userinput: prompt,
+        response: "I am having trouble connecting to my brain right now."
+    };
+}
 };
 
 export default groqResponse;
