@@ -14,7 +14,7 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
 app.use(cors({
-  origin: ["https://virtual-assitant-i5r9.onrender.com", "https://virtual-assitant-i5r9.onrender.com/"],
+  origin: ["https://virtual-assitant-ld7b.onrender.com", "https://virtual-assitant-ld7b.onrender.com/"],
   credentials: true
 }));
 app.use("/api/auth",authRouter)
