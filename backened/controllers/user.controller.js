@@ -80,7 +80,12 @@ export const askToAssistant = async (req, res) => {
     }));
 
     // AI Response (Utility call with updated simple parameters)
-    const aiData = await groqResponse(command, memory);
+   const aiData = await groqResponse(
+     command,
+     user.assistantName,
+     user.name,
+     memory
+  );
 
     // Dynamic Time/Date Handling using Moment.js
     switch (aiData.type) {
