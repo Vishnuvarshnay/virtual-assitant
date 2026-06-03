@@ -23,7 +23,7 @@ const corsOptions = {
 
 // Middlewares
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // ✅ Preflight fix
+app.options("/(.*)", cors(corsOptions)); // ✅ Fixed: * not supported in Express 5
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
