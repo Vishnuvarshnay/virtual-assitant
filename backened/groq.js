@@ -39,7 +39,6 @@ const groqResponse = async (prompt, assistantName = "Shray", userName = "Vishnu"
         - Extract only the core topic for searches (e.g., "YouTube par Salman Khan ke gaane chalao" -> "Salman Khan songs").
         `;
 
-        // Combining System Instruction + Chat History + Current Prompt
         const messages = [
             { role: "system", content: systemInstruction },
             ...memory, 
@@ -49,25 +48,39 @@ const groqResponse = async (prompt, assistantName = "Shray", userName = "Vishnu"
         const result = await axios.post(apiUrl, {
             messages,
             model: "llama-3.3-70b-versatile",
-            // Temperature 0.1 ensure karega ki AI instructions ko strictly follow kare
-            temperature: 0.1, 
+            temperature: 0.1,
+            max_tokens: 1024,        // ✅ ADDED
             response_format: { type: "json_object" }
         }, {
             headers: {
                 "Authorization": `Bearer ${apiKey}`,
                 "Content-Type": "application/json"
-            }
+            },
+            timeout: 15000           // ✅ ADDED
         });
 
         const content = result.data.choices[0].message.content;
-        return JSON.parse(content);
+
+        console.log("RAW GROQ RESPONSE:", content); // Remove after debugging
+
+        try {
+            return JSON.parse(content);  // ✅ WRAPPED IN TRY/CATCH
+        } catch (parseError) {
+            console.error("JSON parse failed. Raw content was:", content);
+            return {
+                type: "general",
+                userinput: prompt,
+                response: content
+            };
+        }
 
     } catch (error) {
-        console.log("=== GROQ ERROR START ===");
-        console.log("Status:", error.response?.status);
-        console.log("Data:", error.response?.data);
-        console.log("Message:", error.message);
-        console.log("=== GROQ ERROR END ===");
+        console.error("=== GROQ ERROR START ===");           // ✅ console.error
+        console.error("Status:", error.response?.status);
+        console.error("Data:", JSON.stringify(error.response?.data, null, 2)); // ✅ JSON.stringify
+        console.error("Message:", error.message);
+        console.error("Full error:", error.response?.data || error.message);   // ✅ ADDED
+        console.error("=== GROQ ERROR END ===");
 
         return {
             type: "general",
