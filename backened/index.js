@@ -14,9 +14,9 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
 app.use(cors({
-  origin:"http://localhost:5173",
-  credentials:true
-}))
+  origin: ["https://virtual-assitant-ld7b.onrender.com", "https://virtual-assitant-ld7b.onrender.com/"],
+  credentials: true
+}));
 app.use("/api/auth",authRouter)
 app.use("/api/user",userRouter) // User routes ke liye userRouter use karna hoga
 // --- TEST ROUTE ---

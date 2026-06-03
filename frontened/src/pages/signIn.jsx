@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import bg from '../assets/authBg.png';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import { userDataContext } from '../context/userContext';
+import { userDataContext } from '../context/UserContext';
 import axios from 'axios';
 
 function SignIn() {
