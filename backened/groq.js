@@ -5,6 +5,16 @@ dotenv.config();
 const groqResponse = async (prompt, assistantName = "Shray", userName = "Vishnu", memory = []) => {
     try {
         const apiKey = process.env.GROQ_API_KEY;
+        
+        if (!apiKey) {
+            console.error("ERROR: GROQ_API_KEY is missing in .env file");
+            return {
+                type: "general",
+                userinput: prompt,
+                response: "API key is missing. Please add GROQ_API_KEY to your .env file."
+            };
+        }
+        
         const apiUrl = "https://api.groq.com/openai/v1/chat/completions";
 
         const systemInstruction = `You are a virtual assistant named ${assistantName} created by ${userName}.
@@ -53,18 +63,18 @@ const groqResponse = async (prompt, assistantName = "Shray", userName = "Vishnu"
         return JSON.parse(content);
 
     } catch (error) {
-    console.log("=== GROQ ERROR START ===");
-    console.log(error.response?.status);
-    console.log(error.response?.data);
-    console.log(error.message);
-    console.log("=== GROQ ERROR END ===");
+        console.log("=== GROQ ERROR START ===");
+        console.log("Status:", error.response?.status);
+        console.log("Data:", error.response?.data);
+        console.log("Message:", error.message);
+        console.log("=== GROQ ERROR END ===");
 
-    return {
-        type: "general",
-        userinput: prompt,
-        response: "I am having trouble connecting to my brain right now."
-    };
-}
+        return {
+            type: "general",
+            userinput: prompt,
+            response: "I am having trouble connecting to my brain right now."
+        };
+    }
 };
 
 export default groqResponse;
