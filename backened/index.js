@@ -32,12 +32,37 @@ app.get("/", (req, res) => {
   res.status(200).json({ status: "Server is running" });
 });
 
-// Debug route — remove after fixing
+// Debug env route — remove after fixing
 app.get("/debug-env", (req, res) => {
   res.json({
     groq_key_exists: !!process.env.GROQ_API_KEY,
     groq_key_prefix: process.env.GROQ_API_KEY?.slice(0, 8) || "MISSING"
   });
+});
+
+// Debug groq route — remove after fixing
+app.get("/debug-groq", async (req, res) => {
+  try {
+    const axios = (await import("axios")).default;
+    const result = await axios.post("https://api.groq.com/openai/v1/chat/completions", {
+      messages: [{ role: "user", content: "say hello" }],
+      model: "llama-3.3-70b-versatile",
+      max_tokens: 50
+    }, {
+      headers: {
+        "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      timeout: 15000
+    });
+    res.json({ success: true, response: result.data.choices[0].message.content });
+  } catch (error) {
+    res.json({
+      success: false,
+      status: error.response?.status,
+      error: error.response?.data || error.message
+    });
+  }
 });
 
 // Routes
