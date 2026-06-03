@@ -10,23 +10,25 @@ import cookieParser from "cookie-parser";
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Middlewares
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
-app.use(cookieParser());
-app.use(cors({
+const corsOptions = {
   origin: [
     "http://localhost:5173",
-    "https://virtual-assitant-backened-vtwx.onrender.com",
     "https://virtual-assitant-ld7b.onrender.com",
-    "https://virtual-assitant-ld7b.onrender.com/"
+    "https://virtual-assitant-backened-vtwx.onrender.com"
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
-}));
+};
 
-// Health check route
+// Middlewares
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // ✅ Preflight fix
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use(cookieParser());
+
+// Health check
 app.get("/", (req, res) => {
   res.status(200).json({ status: "Server is running" });
 });
